@@ -3,8 +3,8 @@ import requests
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
 
-TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
-OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY')
+TELEGRAM_TOKEN = os.environ.get('8688216650:AAEC7vFagTxI7RKojYeIILmFh4jcpDa5yXE')
+OPENROUTER_API_KEY = os.environ.get('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')
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_message = update.message.text
@@ -42,4 +42,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
