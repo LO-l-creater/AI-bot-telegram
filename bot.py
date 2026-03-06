@@ -1,47 +1,11 @@
-import requests
-from telegram import Update
-from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
+import telebot
+import os
 
-TELEGRAM_TOKEN = "8688216650:AAEC7vFagTxI7RKojYeIILmFh4jcpDa5yXE"
-OPENROUTER_API_KEY = "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"
+TOKEN = os.environ.get('BOT_TOKEN')
+bot = telebot.TeleBot(TOKEN)
 
-async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+@bot.message_handler(func=lambda m: True)
+def echo(message):
+    bot.reply_to(message, message.text)
 
-    user_message = update.message.text
-
-    headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "model": "deepseek/deepseek-chat",
-        "messages": [
-            {"role": "user", "content": user_message}
-        ]
-    }
-
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers=headers,
-        json=data
-    )
-
-    answer = response.json()["choices"][0]["message"]["content"]
-
-    await update.message.reply_text(answer)
-
-
-def main():
-
-    print("Бот запущен...")
-
-    app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    app.run_polling()
-
-
-if __name__ == "__main__":
-    main()
+bot.polling()
